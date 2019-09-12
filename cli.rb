@@ -17,12 +17,16 @@ while true
 
   case command.to_s
   when "create"
+  when "c"
     cli.create
   when "read"
+  when "r"
     cli.read
   when "update"
+  when "u"
     cli.update
   when "delete"
+  when "d"
     cli.delete
   when "end"
     exit 1
