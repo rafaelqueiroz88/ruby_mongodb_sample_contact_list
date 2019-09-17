@@ -6,18 +6,6 @@ class CLI
     @contact = contact
   end
 
-  def set_information
-    puts "Put a name: "
-    @contact.set_name gets.chomp
-    puts "Put a lastname: "
-    @contact.set_lastname gets.chomp
-    puts "Put a birthday(yyyy-mm-dd): "
-    bd = gets.chomp
-    bd = Date.parse bd
-    bd = Date.new bd.year, bd.month, bd.day
-    @contact.set_birthday bd
-  end
-
   def create
     set_information
     @contact.save
@@ -25,7 +13,7 @@ class CLI
 
   def read
     puts "Put a contact name to search: "
-    @contact.set_name gets.chomp
+    @contact.name gets.chomp
     @contact.find_by_name.each do |c|
       b = c['birthday'].to_s
       b = Date.parse(b)
@@ -37,14 +25,14 @@ class CLI
 
   def update
     puts "Put an ID to select a contact"
-    @contact.set_id gets.chomp
+    @contact.id gets.chomp
     set_information
     @contact.update
   end
 
   def delete
     puts "Put an ID to select a contact"
-    @contact.set_id gets.chomp
+    @contact.id gets.chomp
     @contact.delete
   end
 
@@ -54,4 +42,17 @@ class CLI
       puts "#{c['name']} - #{c['lastname']}\n"
     end
   end
+
+  private
+    def set_information
+      puts "Put a name: "
+      @contact.name gets.chomp
+      puts "Put a lastname: "
+      @contact.lastname gets.chomp
+      puts "Put a birthday(yyyy-mm-dd): "
+      bd = gets.chomp
+      bd = Date.parse bd
+      bd = Date.new bd.year, bd.month, bd.day
+      @contact.birthday bd
+    end
 end

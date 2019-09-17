@@ -8,22 +8,6 @@ class Contact
     @mongo.all_contacts
   end
 
-  def set_id id
-    @id = id
-  end
-
-  def set_name name
-    @name = name
-  end
-
-  def set_lastname lastname
-    @lastname = lastname
-  end
-
-  def set_birthday birthday
-    @birthday = birthday
-  end
-
   def find_by_name
     @mongo.get_by_name @name
     # @mongo.get_between start_date, end_date

@@ -7,9 +7,7 @@ class MongoModule
   include Mongo
 
   def initialize
-    Mongo::Logger.logger.level = ::Logger::FATAL
-    get_database_setup
-    @client = Mongo::Client.new(@setup[0], database: @setup[1])
+    connect_database
   end
 
   def save name, lastname, birthday
@@ -20,10 +18,8 @@ class MongoModule
   end
 
   def update id, name, lastname, birthday
-    puts id.to_bson_key
     now = DateTime.new(Date.today.year, Date.today.month, Date.today.day)
-    bd = DateTime.new(birthday.year, birthday.month, birthday.day)
-    doc = { name: name, lastname: lastname, birthday: bd, created_at: now, updated_at: now }
+    doc = { name: name, lastname: lastname, birthday: birthday, is_stranger: 1, created_at: now, updated_at: now }
     target = { _id: BSON::ObjectId(id) }
     @client[@setup[2]].update_one target, { "$set" => doc }
   end
@@ -50,7 +46,13 @@ class MongoModule
   end
 
   private
-    def get_database_setup
+    def setup_database
       @setup = ["mongodb://localhost:27017", "ruby_sample", "contact_list"]
+    end
+
+    def connect_database
+      Mongo::Logger.logger.level = ::Logger::FATAL
+      setup_database
+      @client = Mongo::Client.new(@setup[0], database: @setup[1])
     end
 end
